@@ -1,0 +1,15 @@
+{
+  "name": "debris",
+  "version": "0.2.2",
+  "author": "Primate core team <core@primatejs.com>",
+  "homepage": "https://github.com/primatejs/debris",
+  "bugs": "https://github.com/primatejs/debris/issues",
+  "repository": "https://github.com/primatejs/debris",
+  "description": "Supercharged testing framework",
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "main": "./source/main.js",
+  "engines": {
+    "node": ">=17.8.0"
+  }
+}
