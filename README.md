@@ -21,15 +21,9 @@ npm install debris
 
 ## Configuring
 
-We recommend adding a script to your `package.json`.
+*Skip this part you don't have any custom configuration.*
 
-```json
-"scripts": {
-  "test": "node --experimental-json-modules node_modules/debris debris.json"
-}
-```
-
-Then in your project's root directory, create a `debris.json`.
+In your project root path create a `debris.json` or (copy the file in `debris`).
 
 ```json
 {
@@ -38,10 +32,10 @@ Then in your project's root directory, create a `debris.json`.
 }
 ```
 
-`suites` is where your test suites will go, `fixtures` will contain your test
-fixtures. Paths are relative to your project root path.
+`suites` is where your test suites go, `fixtures` is for your test fixtures.
+Paths are relative to your project root path.
 
-If you're interested in showing passed tests, add `"explicit": true`.
+If you're interested in showing passed tests add `"explicit": true`.
 
 ## Using
 
@@ -73,19 +67,19 @@ export default test;
 Now run the test.
 
 ```
-npm run debris
+npx debris
 ```
 
-As the test passed, there won't be any output (unless `explicit` is true).
+As the test passed there won't be any output (unless `explicit` is true).
 
 Now make the test fail by changing either side to `false` and rerun it. You
-will be told that the test 0.0.0 failed and why.
+will be told that the test `0.0.0` failed and why.
 
 ### Adding a fixture
 
 Tests only really become useful when you have fixtures. Fixtures can represent
 classes in your application that you don't want to explicitly import over and
-over again in your tests, or actual fixtures you need reused in your tests.
+over again in your tests or actual fixtures you need reused in your tests.
 
 Create a fixture file in the fixtures directory, `first.js`
 (`test/fixtures/first.js`).
@@ -116,8 +110,7 @@ export default test;
 The properties of `fixtures` reflect the filenames (without `.js`) of the
 fixtures you created.
 
-You can use destructuring to cleverly pull in a fixture you need for an
-individual case.
+You can use destructuring to pull in a fixture you need for an individual case.
 
 ```js
 import {Test} from "debris";
@@ -134,7 +127,7 @@ export default test;
 ### Transformed fixtures
 
 Sometimes you need all the cases of a test to do something common that isn't
-necessarily achieveable by fixtures. For example you might want to read a file
+necessarily achieveable with fixtures. For example you might want to read a file
 based on a test's name and then make sure it fulfills certain criteria.
 
 You can override the `for` method of your `Test` object to achieve that.
@@ -180,7 +173,7 @@ test.space("there is only *the* truth", [true, false], (assert, each) => {
 export default test;
 ```
 
-This effectively creates two cases by the same definition and different input,
+This effectively creates two cases with the same definition and different input,
 one which will pass and another which will fail.
 
 Spacing can be combined with fixtures, see API later on.
@@ -197,24 +190,24 @@ should commit the dynamically generated fixtures alongside your test.
 
 ### Running tests individually
 
-If you're working on a test and aren't interested in others, you can run it
+If you're working on a test and aren't interested in others you can run it
 individually and ignore the rest. Just use the test's generated id.
 
-This would run only the first test.
+This runs only the first test.
 
 ```
-npm run debris 0.0.0
+npx debris 0.0.0
 ```
 
 ### Test-driven development
 
-If you're doing TDD and want tests to explicitly fail as you write them, you
+If you're doing TDD and want tests to explicitly fail as you write them you
 can use `assert.fail()`. Calling it is equivalent to writing
 `assert(true).false()`.
 
 ## API
 
-Subject to breakage until we hit v1.
+Subject to breakage until v1.
 
 ### Test
 
@@ -245,6 +238,7 @@ first parameter and `fixtures` as its second. `body` will be signed in as
 * 100% self-coverage
 * Sane configuration defaults
 * Proper logger (stdio, file)
+* doces documentation
 
 ## License
 
