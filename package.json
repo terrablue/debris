@@ -8,7 +8,7 @@
   "description": "Supercharged testing framework",
   "license": "BSD-3-Clause",
   "type": "module",
-  "exports": "./source/exports.js",
+  "exports": "./exports.js",
   "engines": {
     "node": ">=17.8.0"
   },

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import {Path, File} from "runtime-compat";
-import {App} from "debris";
+import App from "../src/App.js";
 
 const base = Path.resolve();
 
