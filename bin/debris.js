@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {Path, File} from "runtime-compat";
+import {Path, File} from "runtime-compat/filesystem";
 import App from "../src/App.js";
 
 const base = Path.resolve();
