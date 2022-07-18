@@ -66,7 +66,7 @@ export default class Case {
         return assert;
       };
       assert.fail = () => assert(true).false();
-      await this.body(assert, await this.test.for(fixtures(), this));
+      await this.test.per(assert, fixtures(), this);
     } catch (error) {
       console.log(error);
     }

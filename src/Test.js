@@ -1,9 +1,22 @@
 import Case from "./Case.js";
 
 export default class Test {
+  #reasserts = [];
+
   constructor() {
     this.for = fixtures => fixtures;
     this.cases = [];
+  }
+
+  async per(preassert, fixtures, case_) {
+    const assert = this.#reasserts
+      .reduce((assert, reassert) => reassert(assert), preassert);
+
+    await case_.body(assert, await this.for(fixtures, case_));
+  }
+
+  reassert(transformation) {
+    this.#reasserts.push(transformation);
   }
 
   space(name, inputs, body) {
