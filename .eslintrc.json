@@ -4,13 +4,20 @@
     "es2022": true,
     "node": true
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "plugin:json/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "sourceType": "module"
+    "requireConfigFile": false,
+    "sourceType": "module",
+    "babelOptions": {
+      "plugins": [
+        "@babel/plugin-syntax-import-assertions"
+      ]
+    }
   },
   "rules": {
     "array-callback-return": ["error"],
@@ -127,14 +134,14 @@
     "prefer-exponentiation-operator": ["error"],
     "prefer-named-capture-group": ["error"],
     "prefer-numeric-literals": ["error"],
+    "prefer-object-has-own": ["error"],
     "prefer-object-spread": ["error"],
     "prefer-promise-reject-errors": ["error"],
     "prefer-regex-literals": ["error"],
     "prefer-rest-params": ["error"],
     "prefer-spread": ["error"],
     "prefer-template": ["error"],
-    "quote-props": ["error"],
-    "require-await": ["error"],
+    "quote-props": ["error", "as-needed"],
     "require-unicode-regexp": ["error"],
     "spaced-comment": ["error"],
     "strict": ["error"],
@@ -164,6 +171,7 @@
     "no-whitespace-before-property": ["error"],
     "object-curly-spacing": ["error", "never"],
     "quotes": ["error", "double"],
+    "space-infix-ops": ["error"],
     "semi": ["error", "always"],
     "wrap-iife": ["error"]
   }

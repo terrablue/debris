@@ -3,14 +3,8 @@ export default class Reporter {
     this.explicit = explicit;
   }
 
-  show(suites) {
-    for (const suite of suites) {
-      this.show_suite(suite);
-    }
-  }
-
-  show_suite(suite) {
-    for (const test of suite.tests) {
+  show(tests) {
+    for (const test of tests) {
       this.show_test(test);
     }
   }

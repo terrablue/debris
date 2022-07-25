@@ -1,3 +1,4 @@
+import {maybe} from "dyndef";
 import equals from "./equals.js";
 
 export default class Assert {
@@ -43,15 +44,17 @@ export default class Assert {
     this.report(this.actual instanceof expected, expected);
   }
 
-  async throws(expected_message = "") {
+  async throws(message) {
+    maybe(expected_message).string();
     try {
       await this.actual();
       this.actual = "(did not throw)";
-      this.report(false, expected_message);
+      this.report(false, message === undefined ? "(to throw)" : message);
     } catch (actual_error) {
       this.actual = `(Error) ${actual_error.message}`;
-      const expected = `(Error) ${expected_message}`;
-      this.report(actual_error.message === expected_message, expected);
+      const expected = `(Error) ${message}`;
+      this.report(message === undefined
+        || message === actual_error.message, expected);
     }
   }
 

@@ -1,5 +1,5 @@
+import {File} from "runtime-compat/filesystem";
 import fs from "fs";
-import Suite from "./Suite.js";
 import Reporter from "./Reporter.js";
 
 const ending = -3;
@@ -37,16 +37,24 @@ export default class App {
 
   async run(target) {
     const path = this.path.suites;
-    const suites = fs.readdirSync(path).filter(file => !file.endsWith(".js"));
+    const specs = await File.collect(this.base, ".*/src/.*.spec.js$");
     const reporter = new Reporter(this.conf.explicit);
     const fixtures = () =>
       Object.fromEntries(Object.entries(this.fixtures)
         .map(([key, value]) => [key, value()]));
     const runtime = {reporter, fixtures};
-    for (const suite of suites) {
-      this.suites.push(
-        await new Suite(suite, this.suites.length).run(path, target, runtime));
+    let id = 0;
+    const tests = [];
+    for (const spec of specs) {
+      const module = await import(spec.path);
+      const test = module.default;
+      test.name = spec.path.replace(this.base + "/", "");
+      test.id = id;
+      test.path = path;
+      id++;
+      await test.run(target, runtime);
+      tests.push(test);
     }
-    reporter.show(this.suites);
+    reporter.show(tests);
   }
 }

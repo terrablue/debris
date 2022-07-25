@@ -1,22 +1,31 @@
 import Case from "./Case.js";
 
+const fn_reduce = (array, initial) =>
+  array.reduce(async (previous, current) => current(previous), initial);
+
 export default class Test {
   #reasserts = [];
+  #refixs = [];
 
   constructor() {
-    this.for = fixtures => fixtures;
     this.cases = [];
   }
 
-  async per(preassert, fixtures, case_) {
-    const assert = this.#reasserts
-      .reduce((assert, reassert) => reassert(assert), preassert);
+  async per(preassert, prefixtures, case_) {
+    const assert = await fn_reduce(this.#reasserts, preassert);
+    const fixtures = await fn_reduce(this.#refixs, prefixtures);
 
-    await case_.body(assert, await this.for(fixtures, case_));
+    await case_.body(assert, fixtures);
   }
 
-  reassert(transformation) {
-    this.#reasserts.push(transformation);
+  refix(mapper) {
+    this.#refixs.push(mapper);
+    return this;
+  }
+
+  reassert(mapper) {
+    this.#reasserts.push(mapper);
+    return this;
   }
 
   space(name, inputs, body) {

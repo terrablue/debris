@@ -10,16 +10,12 @@ export default class Case {
     this.asserts = [];
   }
 
-  get suite() {
-    return this.test.suite;
-  }
-
   get number() {
-    return `${this.suite.id}.${this.test.id}.${this.id}`;
+    return `${this.test.id}.${this.id}`;
   }
 
   get name() {
-    return `${this.number} ${this.suite.name}.${this.test.name}`;
+    return `${this.number} ${this.test.name}`;
   }
 
   report(passed, actual, expected) {
