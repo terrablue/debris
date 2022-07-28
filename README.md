@@ -130,19 +130,19 @@ Sometimes you need all the cases of a test to do something common that isn't
 necessarily achieveable with fixtures. For example you might want to read a file
 based on a test's name and then make sure it fulfills certain criteria.
 
-You can override the `for` method of your `Test` object to achieve that.
+You can call the `refix` method of your `Test` object to achieve that.
 
 ```js
 import {Test} from "debris";
 
 const test = new Test();
 
-test.for = async (fixtures, {description}) => {
+test.refix(async (fixtures, {description}) => {
   const path = description.replaceAll(" ", "-") + ".html";
   // assume the function `read` returns a file's contents at `path`
   const contents = await read(path);
   return {...fixtures, contents};
-});
+}));
 
 test.case("file containing the truth", (assert, {contents}) => {
   assert(contents).equals("true");
@@ -151,9 +151,9 @@ test.case("file containing the truth", (assert, {contents}) => {
 export default test;
 ```
 
-`for` is a transformation that takes the original `fixtures` parameter and the
-case itself as parameters and returns a (modified) fixtures object which is
-available to the case.
+The first of argument of `refix` is a mapper that takes the original `fixtures`
+parameter and the case itself as parameters and maps it to a (modified) fixtures
+object which is available to the case.
 
 ### Case spacing / fuzzing
 
