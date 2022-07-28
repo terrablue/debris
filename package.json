@@ -1,6 +1,6 @@
 {
   "name": "debris",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "Primate core team <core@primatejs.com>",
   "homepage": "https://github.com/terrablue/debris",
   "bugs": "https://github.com/terrablue/debris/issues",
@@ -9,9 +9,6 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "exports": "./exports.js",
-  "engines": {
-    "node": ">=17.8.0"
-  },
   "bin": "./bin/debris.js",
   "dependencies": {
     "dyndef": "^0.2.2",
