@@ -15,7 +15,7 @@
   "bin": "./bin/debris.js",
   "dependencies": {
     "dyndef": "^0.2.2",
-    "runtime-compat": "^0.4.0"
+    "runtime-compat": "^0.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
