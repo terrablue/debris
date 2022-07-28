@@ -1,4 +1,6 @@
 {
   "fixtures": "test/fixtures",
-  "tests": "src/.*.spec.js$"
+  "base": "src",
+  "pattern": ".*.spec.js$",
+  "explicit": true
 }

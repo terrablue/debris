@@ -1,5 +1,5 @@
+import {Path} from "runtime-compat/filesystem";
 import Assert from "./Assert.js";
-import fs from "fs";
 
 export default class Case {
   constructor(description, body, test, id) {
@@ -24,24 +24,16 @@ export default class Case {
 
   get snapshot_directory() {
     const {test, description} = this;
-    return `${test.path.slice(0, -3)}/${description.replaceAll(" ", "-")}`;
+    return new Path(test.path.directory, btoa(description));
   }
 
-  snapshot(assert_name, data) {
-    const {snapshot_directory} = this;
-    const stat_options = {throwIfNoEntry: false};
-    if (!fs.lstatSync(snapshot_directory, stat_options)) {
-      // create directory
-      fs.mkdirSync(snapshot_directory, {recursive: true});
+  async snapshot(assert_name, data) {
+    const directory = await File.recreate(this.snapshot_directory);
+    const file = new File(directory, assert_name, ".data");
+    if (!await file.exists) {
+      await file.write(data);
     }
-    const path = `${snapshot_directory}/${assert_name}.data`;
-    const exists = fs.lstatSync(path, {"throwIfNoEntry": false});
-    const read_options = {encoding: "utf8"};
-    if (exists) {
-      return fs.readFileSync(path, read_options);
-    }
-
-    fs.writeFileSync(path, data, read_options);
+    return file.read();
   }
 
   get passed() {

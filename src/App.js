@@ -1,42 +1,34 @@
-import {File} from "runtime-compat/filesystem";
-import fs from "fs";
+import {File, Path} from "runtime-compat/filesystem";
 import Reporter from "./Reporter.js";
 
 const ending = -3;
 
 export default class App {
-  constructor(base, conf) {
-    this.base = base;
+  constructor(root, conf) {
+    this.root = root;
     this.conf = conf;
     this.fixtures = {};
   }
 
   get path() {
-    const {base} = this;
+    const {root} = this;
     const {fixtures} = this.conf;
-    return {fixtures: `${base}/${fixtures}`};
+    return {fixtures: `${root}/${fixtures}`};
   }
 
   async load() {
-    const path = this.path.fixtures;
-    const stat_options = {throwIfNoEntry: false};
-    if (fs.lstatSync(path, stat_options)) {
-      this.fixtures = (await Promise.all(fs
-        .readdirSync(path)
-        .filter(fixture => fixture.endsWith(".js"))
-        .map(async fixture => ({
-          key: fixture.slice(0, ending),
-          value: (await import(`${path}/${fixture}`)).default,
-      })))).reduce((fixtures, {key, value}) => {
-        fixtures[key] = value;
-        return fixtures;
-      }, {});
-    }
+    const {fixtures} = this.path;
+    this.fixtures = await File.collect(fixtures, ".js$")
+      .map(async fixture => [
+        fixture.slice(0, ending),
+        (await import(`${fixtures}/${fixture}`)).default,
+      ]);
   }
 
   async run(target) {
-    const specs = await File.collect(this.base, this.conf.tests);
-    const reporter = new Reporter(this.conf.explicit);
+    const {root, conf} = this;
+    const specs = await File.collect(new Path(root, conf.base), conf.pattern);
+    const reporter = new Reporter(conf.explicit);
     const fixtures = () =>
       Object.fromEntries(Object.entries(this.fixtures)
         .map(([key, value]) => [key, value()]));
@@ -46,7 +38,8 @@ export default class App {
     for (const spec of specs) {
       const module = await import(spec.path);
       const test = module.default;
-      test.name = spec.path.replace(this.base + "/", "");
+      test.path = new Path(spec.path);
+      test.name = spec.path.replace(root + "/", "");
       test.id = id;
       id++;
       await test.run(target, runtime);

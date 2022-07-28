@@ -11,11 +11,11 @@ export default class Test {
     this.cases = [];
   }
 
-  async per(preassert, prefixtures, case_) {
+  async per(preassert, prefixtures, c) {
     const assert = await fn_reduce(this.#reasserts, preassert);
     const fixtures = await fn_reduce(this.#refixs, prefixtures);
 
-    await case_.body(assert, fixtures);
+    await c.body(assert, fixtures);
   }
 
   refix(mapper) {
@@ -39,8 +39,8 @@ export default class Test {
   }
 
   async run(target, runtime) {
-    for (const _case of this.cases) {
-      await _case.run(target, runtime);
+    for (const c of this.cases) {
+      await c.run(target, runtime);
     }
   }
 }
