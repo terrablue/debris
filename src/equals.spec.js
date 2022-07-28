@@ -1,5 +1,5 @@
 import {Test} from "debris";
-import equals from "./equals.js"
+import equals from "./equals.js";
 
 const test = new Test();
 

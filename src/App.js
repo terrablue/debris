@@ -15,19 +15,19 @@ export default class App {
   get path() {
     const {base} = this;
     const {suites, fixtures} = this.conf;
-    return {"suites": `${base}/${suites}`, "fixtures": `${base}/${fixtures}`};
+    return {suites: `${base}/${suites}`, fixtures: `${base}/${fixtures}`};
   }
 
   async load() {
     const path = this.path.fixtures;
-    const stat_options = {"throwIfNoEntry": false};
+    const stat_options = {throwIfNoEntry: false};
     if (fs.lstatSync(path, stat_options)) {
       this.fixtures = (await Promise.all(fs
         .readdirSync(path)
         .filter(fixture => fixture.endsWith(".js"))
         .map(async fixture => ({
-          "key": fixture.slice(0, ending),
-          "value": (await import(`${path}/${fixture}`)).default,
+          key: fixture.slice(0, ending),
+          value: (await import(`${path}/${fixture}`)).default,
       })))).reduce((fixtures, {key, value}) => {
         fixtures[key] = value;
         return fixtures;
@@ -48,7 +48,7 @@ export default class App {
     for (const spec of specs) {
       const module = await import(spec.path);
       const test = module.default;
-      test.name = spec.path.replace(this.base + "/", "");
+      test.name = spec.path.replace(`${this.base}/`, "");
       test.id = id;
       test.path = path;
       id++;

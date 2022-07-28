@@ -45,16 +45,17 @@ export default class Assert {
   }
 
   async throws(message) {
-    maybe(expected_message).string();
+    maybe(message).string();
     try {
       await this.actual();
       this.actual = "(did not throw)";
       this.report(false, message === undefined ? "(to throw)" : message);
     } catch (actual_error) {
-      this.actual = `(Error) ${actual_error.message}`;
+      const {message: actual_message} = actual_error;
+      this.actual = `(Error) ${actual_message}`;
       const expected = `(Error) ${message}`;
-      this.report(message === undefined
-        || message === actual_error.message, expected);
+      this.report(message === undefined || message === actual_message,
+        expected);
     }
   }
 

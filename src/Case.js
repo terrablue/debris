@@ -29,14 +29,14 @@ export default class Case {
 
   snapshot(assert_name, data) {
     const {snapshot_directory} = this;
-    const stat_options = {"throwIfNoEntry": false};
+    const stat_options = {throwIfNoEntry: false};
     if (!fs.lstatSync(snapshot_directory, stat_options)) {
       // create directory
-      fs.mkdirSync(snapshot_directory, {"recursive": true});
+      fs.mkdirSync(snapshot_directory, {recursive: true});
     }
     const path = `${snapshot_directory}/${assert_name}.data`;
     const exists = fs.lstatSync(path, {"throwIfNoEntry": false});
-    const read_options = {"encoding": "utf8"};
+    const read_options = {encoding: "utf8"};
     if (exists) {
       return fs.readFileSync(path, read_options);
     }

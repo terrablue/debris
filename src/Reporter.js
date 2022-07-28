@@ -10,16 +10,12 @@ export default class Reporter {
   }
 
   show_test(test) {
-    for (const _case of test.cases) {
-      if (!_case.disabled) {
-        this.show_case(_case);
-      }
-    }
+    test.cases.filter(c => !c.disabled).forEach(c => this.show_case(c));
   }
 
   show_case(_case) {
     const {length} = _case.asserts;
-    this.asserts = length > 1 ? `[0-${length-1}]` : "";
+    this.asserts = length > 1 ? `[0-${length - 1}]` : "";
     if (length === 0) {
       this.show_empty(_case);
     } else {

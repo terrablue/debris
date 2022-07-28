@@ -18,9 +18,9 @@ const is_null = (left, right) =>
   left === null ? right === null : deep(left, right);
 
 const compare = (left, right) =>
-  typeof left !== "object" ? left === right : is_null(left, right);
+  typeof left === "object" ? is_null(left, right) : left === right;
 
 const equals = (left, right) =>
-  typeof left !== typeof right ? false : compare(left, right);
+  typeof left === typeof right ? compare(left, right) : false;
 
 export default equals;
