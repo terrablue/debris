@@ -8,14 +8,13 @@ export default class App {
   constructor(base, conf) {
     this.base = base;
     this.conf = conf;
-    this.suites = [];
     this.fixtures = {};
   }
 
   get path() {
     const {base} = this;
-    const {suites, fixtures} = this.conf;
-    return {suites: `${base}/${suites}`, fixtures: `${base}/${fixtures}`};
+    const {fixtures} = this.conf;
+    return {fixtures: `${base}/${fixtures}`};
   }
 
   async load() {
@@ -36,8 +35,7 @@ export default class App {
   }
 
   async run(target) {
-    const path = this.path.suites;
-    const specs = await File.collect(this.base, ".*/src/.*.spec.js$");
+    const specs = await File.collect(this.base, this.conf.tests);
     const reporter = new Reporter(this.conf.explicit);
     const fixtures = () =>
       Object.fromEntries(Object.entries(this.fixtures)
@@ -48,9 +46,8 @@ export default class App {
     for (const spec of specs) {
       const module = await import(spec.path);
       const test = module.default;
-      test.name = spec.path.replace(`${this.base}/`, "");
+      test.name = spec.path.replace(this.base + "/", "");
       test.id = id;
-      test.path = path;
       id++;
       await test.run(target, runtime);
       tests.push(test);
