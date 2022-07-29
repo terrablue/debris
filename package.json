@@ -1,15 +1,17 @@
 {
   "name": "debris",
   "version": "0.5.0",
-  "author": "Primate core team <core@primatejs.com>",
-  "homepage": "https://github.com/terrablue/debris",
+  "author": "Terrablue <terrablue@posteo.is>",
   "bugs": "https://github.com/terrablue/debris/issues",
   "repository": "https://github.com/terrablue/debris",
-  "description": "Supercharged testing framework",
+  "description": "Supercharged testing framework for Javascript",
   "license": "BSD-3-Clause",
   "type": "module",
   "exports": "./exports.js",
   "bin": "./bin/debris.js",
+  "scripts": {
+    "test": "npx debris"
+  },
   "dependencies": {
     "dyndef": "^0.2.5",
     "runtime-compat": "^0.7.1"
