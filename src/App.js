@@ -9,9 +9,8 @@ export default class App {
   }
 
   get path() {
-    const {root} = this;
-    const {fixtures} = this.conf;
-    return {fixtures: `${root}/${fixtures}`};
+    const {root, conf: {fixtures}} = this;
+    return {fixtures: new Path(root, fixtures)};
   }
 
   async load() {
@@ -35,7 +34,7 @@ export default class App {
       const module = await import(spec.path);
       const test = module.default;
       test.path = new Path(spec.path);
-      test.name = spec.path.replace(root + "/", "");
+      test.name = spec.path.replace(root.path + "/", "");
       test.id = id;
       id++;
       await test.run(target, runtime);
