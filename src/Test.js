@@ -5,7 +5,7 @@ const fn_reduce = (array, initial) =>
 
 export default class Test {
   #reasserts = [];
-  #refixs = [];
+  #fixes = [];
 
   constructor() {
     this.cases = [];
@@ -13,13 +13,13 @@ export default class Test {
 
   async per(preassert, prefixtures, c) {
     const assert = await fn_reduce(this.#reasserts, preassert);
-    const fixtures = await fn_reduce(this.#refixs, prefixtures);
+    const fixtures = await fn_reduce(this.#fixes, prefixtures);
 
     await c.body(assert, fixtures);
   }
 
-  refix(mapper) {
-    this.#refixs.push(mapper);
+  fix(mapper) {
+    this.#fixes.push(mapper);
     return this;
   }
 
