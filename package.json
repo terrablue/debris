@@ -11,14 +11,14 @@
   "exports": "./exports.js",
   "bin": "./bin/debris.js",
   "dependencies": {
-    "dyndef": "^0.2.2",
-    "runtime-compat": "^0.5.1"
+    "dyndef": "^0.2.5",
+    "runtime-compat": "^0.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
     "@babel/eslint-parser": "^7.18.9",
     "@babel/plugin-syntax-import-assertions": "^7.18.6",
-    "debris": "^0.4.0",
+    "debris": "latest",
     "eslint": "^8.20.0",
     "eslint-plugin-json": "^3.1.0"
   }

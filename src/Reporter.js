@@ -4,34 +4,29 @@ export default class Reporter {
   }
 
   show(tests) {
-    for (const test of tests) {
-      this.show_test(test);
-    }
+    tests.forEach(test =>
+      test.cases.filter(c => !c.disabled).forEach(c => this.case(c)));
   }
 
-  show_test(test) {
-    test.cases.filter(c => !c.disabled).forEach(c => this.show_case(c));
-  }
-
-  show_case(_case) {
-    const {length} = _case.asserts;
+  case(c) {
+    const {length} = c.asserts;
     this.asserts = length > 1 ? `[0-${length - 1}]` : "";
     if (length === 0) {
-      this.show_empty(_case);
+      this.empty(c);
     } else {
-      this.show_nonempty(_case);
+      this.nonempty(c);
     }
   }
 
-  show_empty({name, description}) {
+  empty({name, description}) {
     console.log(`${name} \x1b[33m${description}\x1b[0m ${this.asserts}`);
   }
 
-  show_nonempty(_case) {
-    if (_case.passed) {
-      this.passed(_case);
+  nonempty(c) {
+    if (c.passed) {
+      this.passed(c);
     } else {
-      this.failed(_case);
+      this.failed(c);
     }
   }
 
@@ -46,7 +41,7 @@ export default class Reporter {
     for (const assert of asserts) {
       if (!assert.passed) {
         const {id, expected, actual} = assert;
-        console.log(` \x1b[31m[${id}]\x1b[0m`)
+        console.log(` \x1b[31m[${id}]\x1b[0m`);
         console.log(` expected ${JSON.stringify(expected)}`);
         console.log(` actual   \x1b[31m${JSON.stringify(actual)}\x1b[0m`);
       }

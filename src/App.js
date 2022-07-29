@@ -1,8 +1,6 @@
 import {File, Path} from "runtime-compat/filesystem";
 import Reporter from "./Reporter.js";
 
-const ending = -3;
-
 export default class App {
   constructor(root, conf) {
     this.root = root;
@@ -18,11 +16,10 @@ export default class App {
 
   async load() {
     const {fixtures} = this.path;
-    this.fixtures = await File.collect(fixtures, ".js$")
-      .map(async fixture => [
-        fixture.slice(0, ending),
-        (await import(`${fixtures}/${fixture}`)).default,
-      ]);
+    this.fixtures = await Promise.all(await File.collect(fixtures, ".js$",
+        {recursive: false})
+      .map(({path}) => new Path(path))
+      .map(async path => [path.base, (await import(path.path)).default]));
   }
 
   async run(target) {
@@ -30,8 +27,7 @@ export default class App {
     const specs = await File.collect(new Path(root, conf.base), conf.pattern);
     const reporter = new Reporter(conf.explicit);
     const fixtures = () =>
-      Object.fromEntries(Object.entries(this.fixtures)
-        .map(([key, value]) => [key, value()]));
+      Object.fromEntries(this.fixtures.map(([key, value]) => [key, value()]));
     const runtime = {reporter, fixtures};
     let id = 0;
     const tests = [];
