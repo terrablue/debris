@@ -36,6 +36,10 @@ export default class Assert {
     this.report(this.actual !== undefined, "(to be defined)");
   }
 
+  null() {
+    return this.equals(null);
+  }
+
   typeof(expected) {
     this.report(typeof this.actual === expected, expected);
   }
