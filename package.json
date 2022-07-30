@@ -13,7 +13,7 @@
     "test": "npx debris"
   },
   "dependencies": {
-    "dyndef": "^0.2.5",
+    "dyndef": "^0.3.0",
     "runtime-compat": "^0.7.1"
   },
   "devDependencies": {
