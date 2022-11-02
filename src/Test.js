@@ -1,7 +1,8 @@
 import Case from "./Case.js";
 
-const fn_reduce = (array, initial) =>
-  array.reduce(async (previous, current) => current(previous), initial);
+const reduce = (array, initial) =>
+  array.reduce(async (previous, current) =>
+    current(previous), initial);
 
 export default class Test {
   #reasserts = [];
@@ -12,8 +13,8 @@ export default class Test {
   }
 
   async per(preassert, prefixtures, c) {
-    const assert = await fn_reduce(this.#reasserts, preassert);
-    const fixtures = await fn_reduce(this.#fixes, prefixtures);
+    const assert = await reduce(this.#reasserts, preassert);
+    const fixtures = await reduce(this.#fixes, prefixtures);
 
     await c.body(assert, fixtures);
   }

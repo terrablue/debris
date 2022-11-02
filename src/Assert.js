@@ -54,11 +54,11 @@ export default class Assert {
       await this.actual();
       this.actual = "(did not throw)";
       this.report(false, message === undefined ? "(to throw)" : message);
-    } catch (actual_error) {
-      const {message: actual_message} = actual_error;
-      this.actual = `(Error) ${actual_message}`;
+    } catch (error) {
+      const {message: actualMessage} = error;
+      this.actual = `(Error) ${actualMessage}`;
       const expected = `(Error) ${message}`;
-      this.report(message === undefined || message === actual_message,
+      this.report(message === undefined || message === actualMessage,
         expected);
     }
   }
@@ -69,8 +69,8 @@ export default class Assert {
       await this.actual();
       this.actual = "(did not throw)";
       result = true;
-    } catch (actual_error) {
-      this.actual = actual_error.message;
+    } catch (error) {
+      this.actual = error.message;
       result = false;
     } finally {
       this.report(result, "(did not throw)");

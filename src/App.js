@@ -15,8 +15,8 @@ export default class App {
 
   async load() {
     const {fixtures} = this.path;
-    this.fixtures = await Promise.all(await File.collect(fixtures, ".js$",
-        {recursive: false})
+    this.fixtures = await Promise.all(File
+      .collect(fixtures, ".js$", {recursive: false})
       .map(({path}) => new Path(path))
       .map(async path => [path.base, (await import(path.path)).default]));
   }

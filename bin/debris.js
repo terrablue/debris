@@ -5,13 +5,13 @@ import App from "../src/App.js";
 
 const base = Path.resolve();
 
-const get_config_path = async project_directory => {
+const getConfigPath = async projectDirectory => {
   const filename = "debris.json";
-  const file = new File(project_directory, filename);
+  const file = new File(projectDirectory, filename);
   return await file.exists ? file.path : `../${filename}`;
 };
 
-const conf = import(await get_config_path(base), {assert: {type: "json"}});
+const conf = import(await getConfigPath(base), {assert: {type: "json"}});
 const app = new App(base, (await conf).default);
 await app.load();
 app.run(process.argv[2]);

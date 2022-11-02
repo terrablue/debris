@@ -22,14 +22,14 @@ export default class Case {
     this.asserts.push(passed, actual, expected);
   }
 
-  get snapshot_directory() {
+  get snapshotDirectory() {
     const {test, description} = this;
     return new Path(test.path.directory, btoa(description));
   }
 
-  async snapshot(assert_name, data) {
-    const directory = await File.recreate(this.snapshot_directory);
-    const file = new File(directory, assert_name, ".data");
+  async snapshot(assertName, data) {
+    const directory = await File.recreate(this.snapshotDirectory);
+    const file = new File(directory, assertName, ".data");
     if (!await file.exists) {
       await file.write(data);
     }
