@@ -10,7 +10,7 @@
   "exports": "./exports.js",
   "bin": "./bin/debris.js",
   "scripts": {
-    "test": "npx debris"
+    "test": "node bin/debris.js"
   },
   "dependencies": {
     "dyndef": "^0.3.0",
@@ -20,7 +20,6 @@
     "@babel/core": "^7.18.9",
     "@babel/eslint-parser": "^7.18.9",
     "@babel/plugin-syntax-import-assertions": "^7.18.6",
-    "debris": "latest",
     "eslint": "^8.20.0",
     "eslint-plugin-json": "^3.1.0"
   }
