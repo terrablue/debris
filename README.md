@@ -1,6 +1,6 @@
 # Debris: A JavaScript Testing Framework
 
-Debris is a supercharged testing framework with support for fixtures,
+Debris is a JavaScript testing framework with support for fixtures,
 asynchronicity and spaced testing.
 
 ## Features
@@ -13,142 +13,100 @@ asynchronicity and spaced testing.
 * Snapshots
 * Individual test running
 
-## Installing
-
-```
-npm install debris
-```
-
 ## Configuring
 
-*Skip this part you don't have any custom configuration.*
+*Skip this part you don't need a custom configuration.*
 
-In your project root path create a `debris.json` or (copy the file in `debris`).
+In your project root create a `debris.json`.
 
 ```json
 {
-  "suites": "test/suites",
-  "fixtures": "test/fixtures"
+  "fixtures": "fixtures",
+  "explicit": true
 }
 ```
 
-`suites` is where your test suites go, `fixtures` is for your test fixtures.
-Paths are relative to your project root path.
+`fixtures` is the directory containing your test fixtures, the path is relative
+to your project root.
 
-If you're interested in showing passed tests add `"explicit": true`.
+If you're interested in hidding passed tests change `explicit` to `false`.
 
-## Using
+## Writing tests
 
-### Adding a suite
-
-Create a subdirectory in the `suites` directory, for example `first-suite`
-(in our case `test/suites/first-suite`).
-
-### Adding a test
-
-There create a test case in the suite directory, `first-test.js`
-(`test/suites/first-suite/first-test.js`).
-
-Import `Test` from `debris`, create a new `Test` object, add a case and
-default-export the test.
+If you're testing `src/truth.js`, create a `src/truth.spec.js` file.
 
 ```js
-import {Test} from "debris";
-
-const test = new Test();
-
-test.case("there is only *the* truth", assert => {
-  assert(true).equals(true);
+export default test => {
+  test.case("there is only *the* truth", assert => {
+    assert(true).equals(true);
+  });
 });
-
-export default test;
 ```
 
-Now run the test.
+Run the test.
 
 ```
 npx debris
 ```
 
-As the test passed there won't be any output (unless `explicit` is true).
+### Adding fixtures
 
-Now make the test fail by changing either side to `false` and rerun it. You
-will be told that the test `0.0.0` failed and why.
+Fixtures represent a state of your application that you don't want to
+manually set each time.
 
-### Adding a fixture
-
-Tests only really become useful when you have fixtures. Fixtures can represent
-classes in your application that you don't want to explicitly import over and
-over again in your tests or actual fixtures you need reused in your tests.
-
-Create a fixture file in the fixtures directory, `first.js`
-(`test/fixtures/first.js`).
-
-Every fixture file should have one default export defined as a function.
+Create a fixture file in the fixtures directory, `truth.js`
+(`fixtures/truth.js`).
 
 ```js
 export default () => true;
 ```
 
 Fixtures are made available to all test cases as the second parameter to the
-`case` method of `Test`.
+`case` method of `test`.
 
-Modify your `first-test`.
+Modify your test.
 
 ```js
-import {Test} from "debris";
-
-const test = new Test();
-
-test.case("there is only *the* truth", (assert, fixtures) => {
-  assert(fixtures.first).equals(true);
-});
-
-export default test;
+export default test => {
+  test.case("there is only *the* truth", (assert, fixtures) => {
+    assert(fixtures.truth).equals(true);
+  });
+}
 ```
 
 The properties of `fixtures` reflect the filenames (without `.js`) of the
-fixtures you created.
-
-You can use destructuring to pull in a fixture you need for an individual case.
+fixtures you created. You can thus also destructure to pull in the fixtures you
+need for an individual case.
 
 ```js
-import {Test} from "debris";
-
-const test = new Test();
-
-test.case("there is only *the* truth", (assert, {first}) => {
-  assert(first).equals(true);
-});
-
-export default test;
+export default test => {
+  test.case("there is only *the* truth", (assert, {truth}) => {
+    assert(truth).equals(true);
+  });
+}
 ```
 
 ### Transformed fixtures
 
 Sometimes you need all the cases of a test to do something common that isn't
-necessarily achieveable with fixtures. For example you might want to read a file
+necessarily achievable with fixtures. For example you might want to read a file
 based on a test's name and then make sure it fulfills certain criteria.
 
-You can call the `refix` method of your `Test` object to achieve that.
+You can call the `refix` method of the `test` parameter to achieve that.
 
 ```js
-import {Test} from "debris";
+export default test => {
+  test.refix(async (fixtures, {description}) => {
+    const path = description.replaceAll(" ", "-") + ".html";
+    // assume the function `read` returns a file's contents at `path`
+    const contents = await read(path);
+    return {...fixtures, contents};
+  }));
 
-const test = new Test();
-
-test.refix(async (fixtures, {description}) => {
-  const path = description.replaceAll(" ", "-") + ".html";
-  // assume the function `read` returns a file's contents at `path`
-  const contents = await read(path);
-  return {...fixtures, contents};
-}));
-
-test.case("file containing the truth", (assert, {contents}) => {
-  assert(contents).equals("true");
-});
-
-export default test;
+  test.case("file containing the truth", (assert, {contents}) => {
+    assert(contents).equals("true");
+  });
+}
 ```
 
 The first of argument of `refix` is a mapper that takes the original `fixtures`
@@ -159,18 +117,14 @@ object which is available to the case.
 
 Sometimes you don't want individual cases with set input but the same case
 executed many times with different inputs. You can use the `space` method of
-`Test` for that.
+`test` for that.
 
 ```js
-import {Test} from "debris";
-
-const test = new Test();
-
-test.space("there is only *the* truth", [true, false], (assert, each) => {
-  assert(each).equals(true);
-});
-
-export default test;
+export default test => {
+  test.space("there is only *the* truth", [true, false], (assert, each) => {
+    assert(each).equals(true);
+  });
+}
 ```
 
 This effectively creates two cases with the same definition and different input,
@@ -209,12 +163,12 @@ can use `assert.fail()`. Calling it is equivalent to writing
 
 Subject to breakage until v1.
 
-### Test
+### `Test` (the parameter `test` passed to a spec)
 
 #### `case(String description, Function body)`
 
 Defines a case using the given `description`. `body` will be executed with
-assert as its first and fixtures as its second parameter.
+`assert` as its first and `fixtures` as its second parameter.
 
 #### `for(Array fixtures, Case case)`
 
@@ -238,8 +192,8 @@ first parameter and `fixtures` as its second. `body` will be signed in as
 * 100% self-coverage
 * Sane configuration defaults
 * Proper logger (stdio, file)
-* doces documentation
+* Documentation
 
 ## License
 
-BSD-3-Clause
+MIT

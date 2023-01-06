@@ -5,13 +5,9 @@
   "bugs": "https://github.com/terrablue/debris/issues",
   "repository": "https://github.com/terrablue/debris",
   "description": "Testing framework for JavaScript",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "type": "module",
-  "exports": "./exports.js",
-  "bin": "./bin/debris.js",
-  "scripts": {
-    "test": "node bin/debris.js"
-  },
+  "bin": "bin/debris.js",
   "dependencies": {
     "dyndef": "^0.3.0",
     "runtime-compat": "^0.7.1"
