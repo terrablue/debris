@@ -2,10 +2,10 @@ import {maybe} from "dyndef";
 import equals from "./equals.js";
 
 export default class Assert {
-  constructor(actual, id, _case) {
+  constructor(actual, id, c) {
     this.actual = actual;
     this.id = id;
-    this.case = _case;
+    this.case = c;
   }
 
   same(expected) {
@@ -64,11 +64,10 @@ export default class Assert {
   }
 
   async not_throws() {
-    let result;
+    let result = true;
     try {
       await this.actual();
       this.actual = "(did not throw)";
-      result = true;
     } catch (error) {
       this.actual = error.message;
       result = false;

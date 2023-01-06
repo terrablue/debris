@@ -1,3 +1,4 @@
+import {Path} from "runtime-compat/filesystem";
 import Case from "./Case.js";
 
 const reduce = (array, initial) =>
@@ -8,8 +9,11 @@ export default class Test {
   #reasserts = [];
   #fixes = [];
 
-  constructor() {
+  constructor(root, spec, id) {
     this.cases = [];
+    this.path = new Path(spec.path);
+    this.name = spec.path.replace(`${root.path}/`, "");
+    this.id = id;
   }
 
   async per(preassert, prefixtures, c) {
@@ -36,12 +40,13 @@ export default class Test {
   }
 
   case(description, body) {
-    this.cases.push(new Case(description, body, this, this.cases.length));
+    this.cases.push(new Case(description, body, this));
   }
 
-  async run(target, runtime) {
-    for (const c of this.cases) {
-      await c.run(target, runtime);
-    }
+  async run(target, fixtures) {
+    const spec = await import(this.path.path);
+    spec.default(this);
+    await Promise.all(this.cases.map(c => c.run(target, fixtures)));
+    return this;
   }
 }

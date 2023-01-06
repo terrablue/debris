@@ -2,11 +2,11 @@ import {Path} from "runtime-compat/filesystem";
 import Assert from "./Assert.js";
 
 export default class Case {
-  constructor(description, body, test, id) {
+  constructor(description, body, test) {
     this.description = description;
     this.body = body;
     this.test = test;
-    this.id = id;
+    this.id = test.cases.length;
     this.asserts = [];
   }
 
@@ -41,13 +41,12 @@ export default class Case {
     return !this.asserts.some(assert => !assert.passed);
   }
 
-  async run(target, runtime) {
+  async run(target, fixtures) {
     if (target !== undefined && target !== this.number) {
       this.disabled = true;
       return;
     }
     try {
-      const {fixtures} = runtime;
       const assert = actual => {
         const assert = new Assert(actual, this.asserts.length, this);
         this.asserts.push(assert);

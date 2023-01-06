@@ -3,7 +3,7 @@ export default class Reporter {
     this.explicit = explicit;
   }
 
-  show(tests) {
+  report(tests) {
     tests.forEach(test =>
       test.cases.filter(c => !c.disabled).forEach(c => this.case(c)));
   }

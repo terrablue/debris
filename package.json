@@ -1,10 +1,10 @@
 {
   "name": "debris",
-  "version": "0.7.1",
-  "author": "Terrablue <terrablue@posteo.is>",
+  "version": "0.8.0",
+  "author": "Terrablue <terrablue@proton.me>",
   "bugs": "https://github.com/terrablue/debris/issues",
   "repository": "https://github.com/terrablue/debris",
-  "description": "Supercharged testing framework for Javascript",
+  "description": "Testing framework for JavaScript",
   "license": "BSD-3-Clause",
   "type": "module",
   "exports": "./exports.js",

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import {Path, File} from "runtime-compat/filesystem";
-import App from "../src/App.js";
+import run from "../src/run.js";
 
 const base = Path.resolve();
 
@@ -11,7 +11,5 @@ const getConfigPath = async projectDirectory => {
   return await file.exists ? file.path : `../${filename}`;
 };
 
-const conf = import(await getConfigPath(base), {assert: {type: "json"}});
-const app = new App(base, (await conf).default);
-await app.load();
-app.run(process.argv[2]);
+const conf = await import(await getConfigPath(base), {assert: {type: "json"}});
+await run(base, conf.default, process.argv[2]);
