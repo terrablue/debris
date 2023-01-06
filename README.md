@@ -5,7 +5,7 @@ asynchronicity and spaced testing.
 
 ## Features
 
-* No dependencies
+* No dependencies\*
 * Descriptive
 * Fixtures
 * Promise support
@@ -13,9 +13,11 @@ asynchronicity and spaced testing.
 * Snapshots
 * Individual test running
 
+\* aside from `runtime-compat`, which reflects [Flog's standard library][flog].
+
 ## Configuring
 
-*Skip this part you don't need a custom configuration.*
+*Skip this part if you don't need a custom configuration.*
 
 In your project root create a `debris.json`.
 
@@ -197,3 +199,5 @@ first parameter and `fixtures` as its second. `body` will be signed in as
 ## License
 
 MIT
+
+[flog]: https://github.com/flogjs/std
