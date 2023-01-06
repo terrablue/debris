@@ -8,6 +8,9 @@
   "license": "MIT",
   "type": "module",
   "bin": "bin/debris.js",
+  "scripts": {
+    "test": "node bin/debris.js"
+  },
   "dependencies": {
     "dyndef": "^0.3.0",
     "runtime-compat": "^0.7.1"
