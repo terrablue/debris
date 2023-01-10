@@ -1,6 +1,4 @@
+*.json
 test
-stick.json
-module.json
-.eslintrc.json
 output
 .nyc_output
