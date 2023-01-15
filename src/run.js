@@ -3,8 +3,9 @@ import Reporter from "./Reporter.js";
 import Test from "./Test.js";
 
 export default async (root, conf, target) => {
-  const fixtures = await Promise.all(await File
-    .collect(new Path(root, conf.fixtures), ".js$", {recursive: false})
+  const fixtures = await Promise.all(
+    (await File.
+      collect(new Path(root, conf.fixtures), ".js$", {recursive: false}))
     .map(({path}) => new Path(path))
     .map(async path => [path.base, (await import(path.path)).default]));
   const files = await File.collect(new Path(root, conf.base), conf.pattern);
