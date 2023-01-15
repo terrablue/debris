@@ -18,9 +18,9 @@ export default class Test {
 
   async per(preassert, prefixtures, c) {
     const assert = await reduce(this.#reasserts, preassert);
-    const fixtures = await reduce(this.#fixes, prefixtures);
-
-    await c.body(assert, fixtures);
+    const fixtures = Object.fromEntries(prefixtures.map(([key, value]) =>
+      [key, value()]))
+    await c.body(assert, await reduce(this.#fixes, fixtures));
   }
 
   fix(mapper) {
@@ -46,7 +46,9 @@ export default class Test {
   async run(target, fixtures) {
     const spec = await import(this.path.path);
     spec.default(this);
-    await Promise.all(this.cases.map(c => c.run(target, fixtures)));
+    for (const c_ of this.cases) {
+      await c_.run(target, fixtures);
+    }
     return this;
   }
 }

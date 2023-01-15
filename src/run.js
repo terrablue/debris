@@ -9,9 +9,11 @@ export default async (root, conf, target) => {
     .map(({path}) => new Path(path))
     .map(async path => [path.base, (await import(path.path)).default]));
   const files = await File.collect(new Path(root, conf.base), conf.pattern);
-  const tests = await Promise.all(files.map((spec, i) =>
-    new Test(root, spec, i).run(target, () =>
-      Object.fromEntries(fixtures.map(([key, value]) => [key, value()]))
-    )));
+  const tests = [];
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const test = await new Test(root, file, i).run(target, fixtures);
+    tests.push(test);
+  }
   new Reporter(conf.explicit).report(tests);
 };
