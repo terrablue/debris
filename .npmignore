@@ -1,4 +1,5 @@
 *.json
+!debris.json
 test
 output
 .nyc_output
