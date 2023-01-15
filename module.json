@@ -1,13 +1,10 @@
 {
   "name": "debris",
+  "description": "Testing framework for JavaScript",
   "version": "0.8.4",
   "author": "Terrablue <terrablue@proton.me>",
   "issues": "https://github.com/terrablue/debris/issues",
   "repository": "https://github.com/terrablue/debris",
-  "description": "Testing framework for JavaScript",
   "license": "MIT",
-  "bin": "bin/debris.js",
-  "dependencies": {
-    "polyad": "^0.2.2"
-  }
+  "bin": "bin/debris.js"
 }
