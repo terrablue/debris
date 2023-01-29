@@ -41,8 +41,14 @@ export default class Case {
     return !this.asserts.some(assert => !assert.passed);
   }
 
+  targeted(target) {
+    return target.includes(".")
+      ? target === this.number
+      : Number(target) === this.test.id;
+  }
+
   async run(target, fixtures) {
-    if (target !== undefined && target !== this.number) {
+    if (target !== undefined && !this.targeted(target)) {
       this.disabled = true;
       return;
     }
