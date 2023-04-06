@@ -1,10 +1,9 @@
 {
   "name": "debris",
+  "version": "0.9.1",
   "description": "Testing framework for JavaScript",
-  "version": "0.8.6",
-  "author": "Terrablue <terrablue@proton.me>",
-  "issues": "https://github.com/terrablue/debris/issues",
-  "repository": "https://github.com/terrablue/debris",
+  "bugs": "https://github.com/terrablue/debris/issues",
   "license": "MIT",
-  "bin": "bin/debris.js"
+  "bin": "bin/debris.js",
+  "repository": "https://github.com/terrablue/debris"
 }
