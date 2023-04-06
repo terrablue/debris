@@ -1,4 +1,3 @@
-import {Path} from "runtime-compat/filesystem";
 import Case from "./Case.js";
 
 const reduce = (array, initial) =>
@@ -11,15 +10,15 @@ export default class Test {
 
   constructor(root, spec, id) {
     this.cases = [];
-    this.path = new Path(spec.path);
-    this.name = spec.path.replace(`${root.path}/`, "");
+    this.path = spec;
+    this.name = spec.path.replace(`${root}/`, "");
     this.id = id;
   }
 
   async per(preassert, prefixtures, c) {
     const assert = await reduce(this.#reasserts, preassert);
     const fixtures = Object.fromEntries(prefixtures.map(([key, value]) =>
-      [key, value()]))
+      [key, value()]));
     await c.body(assert, await reduce(this.#fixes, fixtures));
   }
 
