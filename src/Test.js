@@ -10,8 +10,8 @@ export default class Test {
 
   constructor(root, spec, id) {
     this.cases = [];
-    this.path = spec;
-    this.name = spec.path.replace(`${root}/`, "");
+    this.path = spec.path;
+    this.name = this.path.replace(`${root}/`, () => "");
     this.id = id;
   }
 
@@ -43,7 +43,7 @@ export default class Test {
   }
 
   async run(target, fixtures) {
-    const spec = await import(this.path.path);
+    const spec = await import(this.path);
     spec.default(this);
     for (const c_ of this.cases) {
       await c_.run(target, fixtures);
