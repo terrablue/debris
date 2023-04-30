@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
 import {Path} from "runtime-compat/fs";
-import run from "../src/run.js";
+import run from "./run.js";
 
-const root = await Path.moduleRoot;
+const root = await Path.root();
 
-const getConfigPath = async moduleDirectory => {
-  const filename = "debris.json";
-  const path = new Path(moduleDirectory, filename);
-  return await path.exists ? path : `../${filename}`;
+const getConfig = async base => {
+  const filename = "debris.config.js";
+  const path = base.join(filename);
+  return (await import(await path.exists ? path : `./${filename}`)).default;
 };
 
-const conf = await import(await getConfigPath(root), {assert: {type: "json"}});
-await run(root, conf.default, process.argv[2]);
+await run(root, await getConfig(root), process.argv[2]);

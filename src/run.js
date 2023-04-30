@@ -16,12 +16,12 @@ const collectTests = async (root, conf, target, fixtures) => {
 export default async (root, conf, target) => {
   const fixtures = await Promise.all(
     (await File
-      .collect(new Path(root, conf.fixtures), ".js$", {recursive: false}))
+      .collect(root.join(conf.fixtures), ".js$", {recursive: false}))
       .map(({path}) => new Path(path))
       .map(async path => [path.base, (await import(path.path)).default]));
   let tests = [];
   if (target?.endsWith(".spec.js")) {
-    const file = Path.resolve().join(target).file;
+    const {file} = Path.resolve().join(target);
     const test = await new Test(root, file, 0).run(undefined, fixtures);
     tests.push(test);
   } else {
