@@ -4,7 +4,11 @@
   "description": "Testing framework for JavaScript",
   "bugs": "https://github.com/terrablue/debris/issues",
   "license": "MIT",
-  "bin": "bin/debris.js",
+  "files": [
+    "src/**",
+    "!src/**/*.spec.js"
+  ],
+  "bin": "src/bin.js",
   "repository": "https://github.com/terrablue/debris",
   "scripts": {
     "test": "node bin/debris.js"
