@@ -1,4 +1,4 @@
-import {Path} from "runtime-compat/filesystem";
+import {Path} from "runtime-compat/fs";
 import Assert from "./Assert.js";
 
 export default class Case {

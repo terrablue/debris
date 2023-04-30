@@ -1,4 +1,4 @@
-import {File, Path} from "runtime-compat/filesystem";
+import {File, Path} from "runtime-compat/fs";
 import Reporter from "./Reporter.js";
 import Test from "./Test.js";
 

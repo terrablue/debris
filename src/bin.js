@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {Path} from "runtime-compat/filesystem";
+import {Path} from "runtime-compat/fs";
 import run from "../src/run.js";
 
 const root = await Path.moduleRoot;
