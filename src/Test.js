@@ -7,6 +7,8 @@ const reduce = (array, initial) =>
 export default class Test {
   #reasserts = [];
   #fixes = [];
+  #lifecycle = Object.fromEntries(["setup", "before", "after", "teardown"]
+    .map(operation => [operation, async () => null]));
 
   constructor(root, spec, id) {
     this.cases = [];
@@ -42,12 +44,38 @@ export default class Test {
     this.cases.push(new Case(description, body, this));
   }
 
+  lifecycle(lifecycle = {}) {
+    this.#lifecycle = {...this.#lifecycle, ...lifecycle};
+  }
+
+  setup(setup = () => null) {
+    this.lifecycle({setup});
+  }
+
+  before(before = () => null) {
+    this.lifecycle({before});
+  }
+
+  after(after = () => null) {
+    this.lifecycle({after});
+  }
+
+  teardown(teardown = () => null) {
+    this.lifecycle({teardown});
+  }
+
   async run(target, fixtures) {
     const spec = await import(this.path);
     spec.default(this);
+
+    const {setup, before, after, teardown} = this.#lifecycle;
+    await setup();
     for (const c_ of this.cases) {
+      await before();
       await c_.run(target, fixtures);
+      await after();
     }
+    await teardown();
     return this;
   }
 }
