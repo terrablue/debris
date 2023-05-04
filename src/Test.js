@@ -1,3 +1,5 @@
+import {Path} from "runtime-compat/fs";
+import {yellow} from "runtime-compat/colors";
 import Case from "./Case.js";
 
 const reduce = (array, initial) =>
@@ -66,6 +68,11 @@ export default class Test {
 
   async run(target, fixtures) {
     const spec = await import(this.path);
+    if (spec.default === undefined) {
+      const path = this.path.replace(`${Path.resolve()}/`, "");
+      console.log(`${yellow("??")} ${path} doesn't export a default function`);
+      return this;
+    }
     spec.default(this);
 
     const {setup, before, after, teardown} = this.#lifecycle;
