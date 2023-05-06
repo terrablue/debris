@@ -3,7 +3,6 @@ import Reporter from "./Reporter.js";
 import Test from "./Test.js";
 
 const collectTests = async (base, pattern, target, fixtures) => {
-  console.log(target);
   const files = await File.collect(base, pattern);
   const tests = [];
   for (let i = 0; i < files.length; i++) {
