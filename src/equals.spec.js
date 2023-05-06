@@ -24,9 +24,15 @@ export default test => {
     assert(equals(new Map(), [])).true();
   });
 
-  test.case("array compare", assert => {
+  test.case("arrays", assert => {
     assert(equals([1], [1])).true();
     assert(equals([1], [0])).false();
     assert(equals([0], [1])).false();
+  });
+
+  test.case("dates", assert => {
+    const now = new Date();
+    assert(equals(new Date(now.toJSON()), now)).true();
+    assert(equals(new Date("2000-01-01"), now)).false();
   });
 };

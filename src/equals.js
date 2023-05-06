@@ -8,11 +8,14 @@ const deepCompare = (left, right) =>
 const object = (left, right) =>
   deepCompare(left, right) && deepCompare(right, left);
 
+const date = (left, right) =>
+  left instanceof Date ? `${left}` === `${right}` : object(left, right);
+
 const arrays = (left, right) => Array.isArray(left) && Array.isArray(right);
 
 const deep = (left, right) => arrays(left, right)
   ? array(left, right)
-  : object(left, right);
+  : date(left, right);
 
 const isNull = (left, right) =>
   left === null ? right === null : deep(left, right);
