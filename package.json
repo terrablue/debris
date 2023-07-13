@@ -1,6 +1,6 @@
 {
   "name": "debris",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Testing framework for JavaScript",
   "bugs": "https://github.com/terrablue/debris/issues",
   "license": "MIT",
@@ -14,10 +14,10 @@
     "test": "node bin/debris.js"
   },
   "dependencies": {
-    "runtime-compat": "^0.17.0"
+    "runtime-compat": "^0.22.1"
   },
   "type": "module",
   "devDependencies": {
-    "maximin": "^0.1.2"
+    "maximin": "^0.1.5"
   }
 }
