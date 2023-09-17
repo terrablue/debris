@@ -1,4 +1,4 @@
-import {maybe} from "runtime-compat/dyndef";
+import {maybe} from "runtime-compat/invariant";
 import equals from "./equals.js";
 
 export default class Assert {
