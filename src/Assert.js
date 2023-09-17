@@ -16,8 +16,16 @@ export default class Assert {
     this.report(equals(this.actual, expected), expected);
   }
 
+  eq(expected) {
+    this.equals(expected);
+  }
+
   nequals(expected) {
     this.report(!equals(this.actual, expected), `different from ${expected}`);
+  }
+
+  neq(expected) {
+    this.nequals(expected);
   }
 
   true() {
