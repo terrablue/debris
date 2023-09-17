@@ -24,6 +24,27 @@ export default test => {
     assert(equals(new Map(), [])).true();
   });
 
+  test.case("object", assert => {
+    assert(equals({id: 1}, {id: 1})).true();
+    assert(equals({id: 1}, {id: 2})).false();
+    assert(equals({id: 2}, {id: 1})).false();
+    assert(equals({id: 1}, {})).false();
+    assert(equals({}, {id: 1})).false();
+
+    assert(equals({id: 1, name: "n"}, {id: 1, name: "n"})).true();
+    assert(equals({id: 1, name: "n"}, {name: "n", id: 1})).true();
+    assert(equals({id: 1, name: "n"}, {id: 2, name: "n"})).false();
+    assert(equals({id: 1, name: "n"}, {id: 1, name: "m"})).false();
+    assert(equals({id: 2, name: "n"}, {id: 1, name: "n"})).false();
+    assert(equals({id: 1, name: "m"}, {id: 2, name: "n"})).false();
+    assert(equals({id: 1, name: "n"}, {id: 2, name: "m"})).false();
+    assert(equals({id: 2, name: "m"}, {id: 1, name: "n"})).false();
+    assert(equals({id: 1, name: "n"}, {name: "n"})).false();
+    assert(equals({id: 1, name: "n"}, {id: 1})).false();
+    assert(equals({name: "n"}, {id: 1, name: "n"})).false();
+    assert(equals({id: 1}, {id: 1, name: "n"})).false();
+  });
+
   test.case("array", assert => {
     assert(equals([1], [1])).true();
     assert(equals([1], [0])).false();
