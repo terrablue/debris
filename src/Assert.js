@@ -16,7 +16,7 @@ export default class Assert {
     this.report(equals(this.actual, expected), expected);
   }
 
-  unequals(expected) {
+  nequals(expected) {
     this.report(!equals(this.actual, expected), `different from ${expected}`);
   }
 
@@ -63,7 +63,7 @@ export default class Assert {
     }
   }
 
-  async not_throws() {
+  async nthrows() {
     let result = true;
     try {
       await this.actual();
